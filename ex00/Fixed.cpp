@@ -32,6 +32,7 @@ Fixed &Fixed::operator=( const Fixed &self )
 // bits
 void Fixed::setRawBits( const int raw )
 {
+	std::cout << "setRawBits member function called" << std::endl;
 	fixedPoint = raw;
 }
 
