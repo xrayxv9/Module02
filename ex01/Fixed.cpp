@@ -1,12 +1,26 @@
 #include "Fixed.hpp"
+#include <cmath>
 #include <stdio.h>
 
 const int Fixed::bitShift = 8;
+
 // Here is the connonical form 
 Fixed::Fixed( void )
 {
 	std::cout << "Default constructor called" << std::endl;
 	this->fixedPoint = 0;
+}
+
+Fixed::Fixed( const int nb )
+{
+	std::cout << "Int constructor called" << std::endl;
+	this->fixedPoint = nb << bitShift;
+}
+
+Fixed::Fixed( const float nb )
+{
+	std::cout << "Float constructor called" << std::endl;
+	fixedPoint = roundf(nb* (1 << bitShift));
 }
 
 Fixed::Fixed( const Fixed &copy )
@@ -30,7 +44,13 @@ Fixed &Fixed::operator=( const Fixed &self )
 	return *this;
 }
 
-// bits
+std::ostream &operator<<( std::ostream& o, const Fixed &self )
+{
+	o << self.toFloat();
+	return o;
+}
+
+// functions
 void Fixed::setRawBits( const int raw )
 {
 	std::cout << "setRawBits member function called" << std::endl;
@@ -41,4 +61,14 @@ int Fixed::getRawBits( void ) const
 {
 	std::cout << "getRawBits member function called" << std::endl;
 	return this->fixedPoint;
+}
+
+float Fixed::toFloat( void ) const
+{
+	return (float)this->fixedPoint / (float)(1 << this->bitShift);
+}
+
+int Fixed::toInt( void ) const
+{
+	return roundf(this->fixedPoint >> this->bitShift);
 }
